@@ -4,8 +4,9 @@
 * [] add code coverage tools
 * [] add CI/CD tools
 * [] add code documentation tools
-* [] add redux
-* [] add firebase
-* [] add navbar
+* [x] add redux
+* [x] add firebase
+* [x] add navbar
 * [] add Input Field
-* [] add tailwind css
+* [x] add tailwind css
+* [] login, signup, reset pass, forgot pass, email verification page designs
