@@ -6,19 +6,24 @@ import {
   Login,
   ResetPassword,
   Signup,
+  Tasks,
 } from "./pages";
+import Navbar from "./Components/Navbar";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
+      <Navbar>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </Navbar>
     </BrowserRouter>
   );
 };

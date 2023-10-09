@@ -4,5 +4,6 @@ import ResetPassword from "./ResetPassword";
 import Login from "./Login";
 import Signup from "./Signup";
 import ErrorPage from "./ErrorPage";
+import Tasks from "./Tasks";
 
-export { ForgotPassword, Home, Login, ResetPassword, Signup, ErrorPage };
+export { ForgotPassword, Home, Login, ResetPassword, Signup, ErrorPage, Tasks };

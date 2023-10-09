@@ -8,3 +8,4 @@
 * [] add firebase
 * [] add navbar
 * [] add Input Field
+* [] add tailwind css
