@@ -6,6 +6,8 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   signOut,
+  confirmPasswordReset,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 export interface IUserSignInData {
@@ -88,6 +90,51 @@ export const userAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
+
+    sendResetPassWordEmail: builder.mutation<
+      string,
+      {
+        email: string;
+      }
+    >({
+      queryFn: async ({ email }) => {
+        try {
+          await sendPasswordResetEmail(auth, email, {
+            url: "http://localhost:5173/login",
+          });
+          return {
+            data: "Password reset link sent to your email",
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
+
+    setNewPassWord: builder.mutation<
+      string,
+      {
+        oobCode: string;
+        password: string;
+      }
+    >({
+      queryFn: async ({ oobCode, password }) => {
+        await confirmPasswordReset(auth, oobCode, password);
+        try {
+          return {
+            data: "Successfully reset Password",
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -96,4 +143,6 @@ export const {
   useEmailLoginMutation,
   useGoogleSignupMutation,
   useLogoutMutation,
+  useSendResetPassWordEmailMutation,
+  useSetNewPassWordMutation,
 } = userAuthAPI;

@@ -9,6 +9,8 @@ import {
   useEmailLoginMutation,
   useGoogleSignupMutation,
   useLogoutMutation,
+  useSendResetPassWordEmailMutation,
+  useSetNewPassWordMutation,
 } from "./API/userAuthAPI";
 
 import { persistStore, persistReducer } from "redux-persist";
@@ -51,11 +53,14 @@ export {
   // system settings
   resetSystem,
   themeSwitch,
+
   // user auth
   useEmailSignupMutation,
   useEmailLoginMutation,
   useGoogleSignupMutation,
   useLogoutMutation,
+  useSendResetPassWordEmailMutation,
+  useSetNewPassWordMutation,
 
   // user auth slice
   changeValue,
