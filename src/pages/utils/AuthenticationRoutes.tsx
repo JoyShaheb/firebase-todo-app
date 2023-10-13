@@ -3,7 +3,7 @@ import { RootState } from "../../store";
 import { useSelector } from "react-redux";
 
 const AuthenticationRoutes = () => {
-  const userUid = useSelector((state: RootState) => state.user.userUid);
+  const userUid = useSelector((state: RootState) => state.user.uid);
   return userUid ? <Navigate to="/tasks" replace /> : <Outlet />;
 };
 

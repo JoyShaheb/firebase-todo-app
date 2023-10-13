@@ -8,12 +8,9 @@ import {
   signOut,
   confirmPasswordReset,
   sendPasswordResetEmail,
+  updateProfile,
 } from "firebase/auth";
-
-export interface IUserSignInData {
-  email: string;
-  password: string;
-}
+import { IUserSignInData, IUpdateUser } from "../../types/interface";
 
 export const userAuthAPI = createApi({
   reducerPath: "userAuthAPI",
@@ -135,6 +132,34 @@ export const userAuthAPI = createApi({
       },
       invalidatesTags: ["User"],
     }),
+    // update user profile
+    updateUserProfile: builder.mutation<
+      IUpdateUser,
+      Pick<IUpdateUser, "name" | "photoURL">
+    >({
+      queryFn: async ({ name, photoURL }) => {
+        try {
+          const user = auth.currentUser;
+          if (user) {
+            // Update the user's profile with the provided name and photoURL
+            await updateProfile(user, { displayName: name, photoURL });
+          }
+          return {
+            data: {
+              name,
+              photoURL,
+              email: user?.email,
+              uid: user?.uid,
+            } as IUpdateUser,
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -145,4 +170,5 @@ export const {
   useLogoutMutation,
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
+  useUpdateUserProfileMutation,
 } = userAuthAPI;

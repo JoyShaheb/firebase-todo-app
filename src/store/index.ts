@@ -11,6 +11,7 @@ import {
   useLogoutMutation,
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
+  useUpdateUserProfileMutation,
 } from "./API/userAuthAPI";
 
 import { persistStore, persistReducer } from "redux-persist";
@@ -61,6 +62,7 @@ export {
   useLogoutMutation,
   useSendResetPassWordEmailMutation,
   useSetNewPassWordMutation,
+  useUpdateUserProfileMutation,
 
   // user auth slice
   loginSuccess,

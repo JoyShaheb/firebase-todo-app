@@ -3,7 +3,7 @@ import { RootState } from "../../store";
 import { useSelector } from "react-redux";
 
 const ProtectedRoutes = () => {
-  const userUid = useSelector((state: RootState) => state.user.userUid);
+  const userUid = useSelector((state: RootState) => state.user.uid);
   return userUid ? <Outlet /> : <Navigate to="/login" replace />;
 };
 

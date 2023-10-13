@@ -23,16 +23,16 @@ const App = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const userUid = user.uid;
-        const profileImage = user.photoURL as string;
+        const uid = user.uid;
+        const photoURL = user.photoURL as string;
         const name = user.displayName as string;
         const email = user.email as string;
         // @ts-ignore
         // Cookies.set("accessToken", user?.accessToken);
         dispatch(
           loginSuccess({
-            userUid,
-            profileImage,
+            uid,
+            photoURL,
             name,
             email,
           })

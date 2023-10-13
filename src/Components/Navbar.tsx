@@ -35,7 +35,7 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
             Fire Task
           </span>
           {/* icon */}
-          {user.userUid && (
+          {user.uid && (
             <div className="flex items-center md:order-2 relative">
               <button
                 type="button"
@@ -47,10 +47,10 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 <span className="sr-only">Open user menu</span>
-                {user?.profileImage ? (
+                {user?.photoURL ? (
                   <img
                     className="w-8 h-8 rounded-full"
-                    src={user?.profileImage}
+                    src={user?.photoURL}
                     alt="user photo"
                   />
                 ) : (
@@ -114,7 +114,7 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
           )}
 
           {/* signup button */}
-          {!user.userUid && (
+          {!user.uid && (
             <div className="flex gap-3">
               <button
                 type="button"
