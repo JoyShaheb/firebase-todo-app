@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { sysmtemSlice, resetSystem, themeSwitch } from "./Slices/systemSlice";
-import { userDataSlice, changeValue, resetUserData } from "./Slices/userSlice";
+import { userDataSlice, loginSuccess, logoutSuccess } from "./Slices/userSlice";
 
 import {
   userAuthAPI,
@@ -63,6 +63,6 @@ export {
   useSetNewPassWordMutation,
 
   // user auth slice
-  changeValue,
-  resetUserData,
+  loginSuccess,
+  logoutSuccess,
 };

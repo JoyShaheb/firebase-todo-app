@@ -1,26 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface InitialStateProps {
+interface UserState {
   userUid: string;
+  name: string;
+  email: string;
+  profileImage: string;
 }
 
-export const initialState: InitialStateProps = {
+export const initialState: UserState = {
   userUid: "",
+  name: "",
+  email: "",
+  profileImage: "",
 };
 
 export const userDataSlice = createSlice({
   name: "userData",
   initialState,
   reducers: {
-    changeValue(state, action: PayloadAction<InitialStateProps>) {
+    loginSuccess: (state, action: PayloadAction<UserState>) => {
       return {
         ...state,
         ...action.payload,
       };
     },
-    resetUserData: () => initialState,
+    logoutSuccess: () => initialState,
   },
 });
 
-export const { changeValue, resetUserData } = userDataSlice.actions;
+export const { loginSuccess, logoutSuccess } = userDataSlice.actions;
