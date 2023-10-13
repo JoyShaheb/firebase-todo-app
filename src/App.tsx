@@ -8,6 +8,7 @@ import {
   ResetPassword,
   Signup,
   Tasks,
+  Profile,
 } from "./pages";
 import Navbar from "./Components/Navbar";
 import { onAuthStateChanged } from "firebase/auth";
@@ -51,6 +52,7 @@ const App = () => {
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/tasks" element={<Tasks />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
 
           <Route element={<AuthenticationRoutes />}>

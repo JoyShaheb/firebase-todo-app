@@ -5,6 +5,8 @@ import { RootState } from "../store";
 import { useLogoutMutation } from "../store";
 import { toast } from "react-toastify";
 import { TextLimit } from "./Text/TextLimit";
+import { Link } from "react-router-dom";
+import { UserIcon } from "@heroicons/react/24/outline";
 
 const Navbar = ({ children }: { children: React.ReactNode }) => {
   const [logout] = useLogoutMutation();
@@ -37,7 +39,7 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
             <div className="flex items-center md:order-2 relative">
               <button
                 type="button"
-                className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                className="border border-gray-500 p-[3px] flex mr-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                 id="user-menu-button"
                 aria-expanded="false"
                 data-dropdown-toggle="user-dropdown"
@@ -45,11 +47,15 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 <span className="sr-only">Open user menu</span>
-                <img
-                  className="w-8 h-8 rounded-full"
-                  src={user?.profileImage}
-                  alt="user photo"
-                />
+                {user?.profileImage ? (
+                  <img
+                    className="w-8 h-8 rounded-full"
+                    src={user?.profileImage}
+                    alt="user photo"
+                  />
+                ) : (
+                  <UserIcon className="w-6 rounded-full" />
+                )}
               </button>
               {/* <!-- Dropdown menu --> */}
               <div
@@ -65,37 +71,37 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
               >
                 <div className="px-4 py-3">
                   <span className="block text-sm text-gray-900 dark:text-white">
-                    {TextLimit(user?.name, 20)}
+                    {user?.name ? TextLimit(user?.name, 20) : "anonymus user"}
                   </span>
                   <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
                     {TextLimit(user?.email, 20)}
                   </span>
                 </div>
                 <ul className="py-2" aria-labelledby="user-menu-button">
-                  <li>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >
-                      Dashboard
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >
-                      Settings
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >
-                      Earnings
-                    </a>
-                  </li>
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/tasks"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Tasks
+                  </Link>
+                  <Link
+                    to="/tasks"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Settings
+                  </Link>
+                  <Link
+                    to="/tasks"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Premium
+                  </Link>
                   <div
                     onClick={appSignout}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
