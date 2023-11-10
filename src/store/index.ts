@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { sysmtemSlice, resetSystem, themeSwitch } from "./Slices/systemSlice";
 import { userDataSlice, loginSuccess, logoutSuccess } from "./Slices/userSlice";
-
+import { taskAPI } from "./API/taskAPI";
 import {
   userAuthAPI,
   useEmailSignupMutation,
@@ -37,11 +37,12 @@ export const store = configureStore({
     system: persistedSystemReducer,
     user: persistedUserReducer,
     [userAuthAPI.reducerPath]: userAuthAPI.reducer,
+    [taskAPI.reducerPath]: taskAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(userAuthAPI.middleware),
+    }).concat(userAuthAPI.middleware, taskAPI.middleware),
 });
 
 export const persistedStore = persistStore(store);

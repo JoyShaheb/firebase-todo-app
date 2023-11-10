@@ -9,3 +9,12 @@ export interface IUpdateUser {
   email: string;
   uid: string;
 }
+
+export interface ITaskProps {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  deadline: string;
+  label: string;
+}
