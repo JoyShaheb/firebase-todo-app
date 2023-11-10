@@ -54,7 +54,7 @@ const Tasks = () => {
   }
   return (
     <div className="row">
-      <CreateModal
+      {/* <CreateModal
         button={<button className="btn btn-primary">Create Task</button>}
         title="Create Task"
         onCancel={() => console.log("cancel")}
@@ -117,9 +117,9 @@ const Tasks = () => {
             value={newTask?.label}
           />
         </form>
-      </CreateModal>
+      </CreateModal> */}
       {data?.map((task) => {
-        return <Task key={task.id} {...task} deleteTask={deleteTask} />;
+        return <Task key={task.id} {...task}  />;
       })}
     </div>
   );
