@@ -119,7 +119,8 @@ const Tasks = () => {
                 className="form-input text-black"
                 onChange={handleInput}
                 name="status"
-                value={newTask?.status}
+                // value={newTask?.status}
+                value="Incomplete"
               />
             </div>
 
