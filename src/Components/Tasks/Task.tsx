@@ -4,64 +4,63 @@ import { StatusEnum } from "../../types/enum";
 import { BsPencil, BsTrash, BsClock } from "react-icons/bs";
 import DeleteModal from "../Modal/DeleteModal";
 import dayjs from "dayjs";
+import CreateModal from "../Modal/CreateModal";
 
 interface ITaskComponentProps extends ITaskProps {
   deleteTask: (id: string) => void;
 }
 
 const Task: FC<ITaskComponentProps> = ({
-  // deadline,
-  // description,
-  // id,
-  // label,
-  // status,
-  // title,
-  // deleteTask,
+  deadline,
+  description,
+  id,
+  label,
+  status,
+  title,
+  deleteTask,
 }) => {
   return (
-    
-<div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-
-<h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-<p className="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-</div>
-
-    // <div className="bg-white p-4 rounded shadow-md m-2 max-w-md">
-    //   <div className="font-semibold text-xl">{title}</div>
-    //   <div className="flex items-center gap-3 mb-3 text-gray-600">
-    //     <BsClock />
-    //     {dayjs(deadline).format("dddd, MMMM D, YYYY")}
-    //   </div>
-    //   <p className="text-gray-800">{description}</p>
-    //   <div className="flex gap-2">
-    //     {status == StatusEnum.INCOMPLETE && (
-    //       <span className="bg-yellow-400 text-white px-4 py-1 rounded-full">
-    //         {status}
-    //       </span>
-    //     )}
-    //     {status == StatusEnum.CANCELLED && (
-    //       <span className="bg-red-500 text-white px-4 py-1 rounded-full">
-    //         {status}
-    //       </span>
-    //     )}
-    //     <span className="bg-green-500 text-white px-4 py-1 rounded-full">
-    //       <BsPencil />
-    //     </span>
-
-    //     <DeleteModal
-    //       button={
-    //         <span className="bg-red-500 text-white px-4 py-1 rounded-full">
-    //           <BsTrash />
-    //         </span>
-    //       }
-    //       title="Delete Task"
-    //       description="Are you sure you want to delete this task?"
-    //       onCancel={() => console.log("cancel")}
-    //       onConfirm={() => deleteTask(id)}
-    //       onClose={() => console.log("close")}
-    //     />
-    //   </div>
-    // </div>
+    <div className="block mt-3 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <div className="flex items-center mb-2">
+        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{title}</h5>
+        <span className="ml-2 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
+          {label}
+        </span>
+      </div>
+      <div className="flex items-center gap-3 text-gray-600 mb-3">
+        <BsClock />
+        {dayjs(deadline).format("dddd, MMMM D, YYYY")}
+      </div>
+      <p className="font-normal text-gray-700 dark:text-gray-400 mb-2">{description}</p>
+      <div className="flex gap-2">
+        {status === StatusEnum.INCOMPLETE && (
+          <span className="bg-yellow-400 text-white px-4 py-1 rounded-full">
+            {status}
+          </span>
+        )}
+        {status === StatusEnum.CANCELLED && (
+          <span className="bg-red-500 text-white px-4 py-1 rounded-full">
+            {status}
+          </span>
+        )}
+        {/* <CreateModal/> */}
+        <span className="bg-green-500 text-white px-4 py-1 rounded-full">
+          <BsPencil />
+        </span>
+        <DeleteModal
+          title="Delete Task"
+          description="Are you sure you want to delete this task?"
+          onCancel={() => console.log("cancel")}
+          onConfirm={() => deleteTask(id)}
+          onClose={() => console.log("close")}
+          button={
+            <span className="bg-red-500 text-white px-4 py-1 rounded-full">
+              <BsTrash />
+            </span>
+          }
+        />
+      </div>
+    </div>
   );
 };
 

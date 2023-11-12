@@ -54,72 +54,95 @@ const Tasks = () => {
   }
   return (
     <div className="row">
-      {/* <CreateModal
+      <CreateModal
         button={<button className="btn btn-primary">Create Task</button>}
         title="Create Task"
         onCancel={() => console.log("cancel")}
         onClose={() => console.log("close")}
         onConfirm={onSubmit}
       >
-        <form
-          onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
-            e.preventDefault()
-          }
-        >
-          <label htmlFor="" className="">
-            Title
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            onChange={handleInput}
-            name="title"
-            value={newTask?.title}
-          />
-          <label htmlFor="" className="">
-            Deadline
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            onChange={handleInput}
-            name="deadline"
-            value={newTask?.deadline}
-          />
-          <label htmlFor="" className="">
-            Description
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            onChange={handleInput}
-            name="description"
-            value={newTask?.description}
-          />
-          <label htmlFor="" className="">
-            Status
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            onChange={handleInput}
-            name="status"
-            value={newTask?.status}
-          />
-          <label htmlFor="" className="">
-            Label
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            onChange={handleInput}
-            name="label"
-            value={newTask?.label}
-          />
-        </form>
-      </CreateModal> */}
+        <div className="w-1/3"> {/* Set the width to 33% of the container */}
+          <form
+            onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
+              e.preventDefault()
+            }
+          >
+            <div className="mb-4">
+              <label htmlFor="title" className="block">
+                Title
+              </label>
+              <input
+                type="text"
+                id="title"
+                className="form-input"
+                onChange={handleInput}
+                name="title"
+                value={newTask?.title}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="deadline" className="block">
+                Deadline
+              </label>
+              <input
+                type="date"
+                id="deadline"
+                className="form-input"
+                onChange={handleInput}
+                name="deadline"
+                value={newTask?.deadline}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="description" className="block">
+                Description
+              </label>
+              <input
+                type="text"
+                id="description"
+                className="form-input"
+                onChange={handleInput}
+                name="description"
+                value={newTask?.description}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="status" className="block">
+                Status
+              </label>
+              <input
+                type="text"
+                id="status"
+                className="form-input"
+                onChange={handleInput}
+                name="status"
+                value={newTask?.status}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="label" className="block">
+                Label
+              </label>
+              <input
+                type="text"
+                id="label"
+                className="form-input"
+                onChange={handleInput}
+                name="label"
+                value={newTask?.label}
+              />
+            </div>
+          </form>
+        </div>
+      </CreateModal>
+
+
       {data?.map((task) => {
-        return <Task key={task.id} {...task}  />;
+        return <Task key={task.id} {...task} deleteTask={deleteTask} />;
       })}
     </div>
   );
