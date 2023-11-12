@@ -4,6 +4,10 @@ import { StatusEnum } from "../../types/enum";
 import { BsPencil, BsTrash, BsClock } from "react-icons/bs";
 import DeleteModal from "../Modal/DeleteModal";
 import dayjs from "dayjs";
+import TaskModal from "../Modal/TaskModal";
+import TaskForm from "../Forms/TaskForm";
+import { toast } from "react-toastify";
+import { useEditOneTaskMutation } from "../../store/API/taskAPI";
 
 interface ITaskComponentProps extends ITaskProps {
   deleteTask: (id: string) => void;
@@ -18,6 +22,29 @@ const Task: FC<ITaskComponentProps> = ({
   title,
   deleteTask,
 }) => {
+  const [data, setData] = useState({
+    id,
+    title,
+    deadline,
+    status,
+    label,
+    description,
+  });
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+
+  const [editOneTask] = useEditOneTaskMutation();
+  const onSubmit = async () => {
+    await toast.promise(editOneTask(data).unwrap(), {
+      pending: "Updating task...",
+      success: "Task updated successfully",
+      error: "Error updating task",
+    });
+  };
   const initialStatus = localStorage.getItem(`status_${id}`) || StatusEnum.INCOMPLETE;
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
 
@@ -46,19 +73,34 @@ const Task: FC<ITaskComponentProps> = ({
       </div>
       <div className="flex items-center gap-3 text-gray-600 mb-3">
         <BsClock />
-        {dayjs(deadline).format("dddd, MMMM D, YYYY")}
+        {deadline
+          ? dayjs(deadline).format("dddd, MMMM D, YYYY")
+          : "No Deadline"}
       </div>
       <p className="font-normal text-gray-700 dark:text-gray-400 mb-2">{description}</p>
       <div className="flex gap-2">
         <button
-          className={`bg-${selectedStatus === StatusEnum.INCOMPLETE ? "yellow-400" : "green-500"} text-white px-4 py-1 rounded-full`}
+          className={`${selectedStatus === StatusEnum.INCOMPLETE
+              ? 'bg-yellow-400'
+              : 'bg-green-500'
+            } text-white px-4 py-1 rounded-full`}
           onClick={toggleStatus}
         >
-          {selectedStatus === StatusEnum.INCOMPLETE ? "Incomplete" : "Completed"}
+          {selectedStatus === StatusEnum.INCOMPLETE ? 'Incomplete' : 'Completed'}
         </button>
-        <span className="bg-blue-800 text-white px-4 py-1 rounded-full">
-          <BsPencil />
-        </span>
+        <TaskModal
+          button={
+            <span className="bg-blue-800 text-white px-4 py-1 rounded-full">
+              <BsPencil className="inline-block text-xs"/>
+            </span>
+          }
+          title="Edit Task"
+          onCancel={() => console.log("cancel")}
+          onClose={() => console.log("close")}
+          onConfirm={onSubmit}
+        >
+          <TaskForm {...data} handleInput={handleInput} />
+        </TaskModal>
         <DeleteModal
           title="Delete Task"
           description="Are you sure you want to delete this task?"
@@ -67,7 +109,7 @@ const Task: FC<ITaskComponentProps> = ({
           onClose={() => console.log("close")}
           button={
             <span className="bg-red-500 text-white px-4 py-1 rounded-full">
-              <BsTrash />
+              <BsTrash className="inline-block text-xs" />
             </span>
           }
         />

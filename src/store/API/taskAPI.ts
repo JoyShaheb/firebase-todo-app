@@ -6,9 +6,14 @@ import {
   collection,
   deleteDoc,
   doc,
+  // getDoc,
+  query,
+  where,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../Config/firebase-config";
+import { NewTaskType, UpdateTaskType } from "../../types/types";
 
 const tasksCollectionName = "tasks";
 
@@ -17,9 +22,19 @@ export const taskAPI = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Tasks"],
   endpoints: (builder) => ({
-    getAllTasks: builder.query<ITaskProps[], null>({
-      queryFn: async () => {
-        const getAlltasks = await getDocs(collection(db, tasksCollectionName));
+    getAllTasks: builder.query<
+      ITaskProps[],
+      {
+        userID: string;
+      }
+    >({
+      queryFn: async ({ userID }) => {
+        const requestQuery = query(
+          collection(db, tasksCollectionName),
+          where("userOwner", "==", userID),
+        );
+
+        const getAlltasks = await getDocs(requestQuery);
 
         const querySnapshot = getAlltasks.docs.map((doc) => {
           return {
@@ -63,24 +78,49 @@ export const taskAPI = createApi({
       invalidatesTags: ["Tasks"],
     }),
 
-    createOneTask: builder.mutation<
-      string,
-      Pick<
-        ITaskProps,
-        "deadline" | "description" | "label" | "status" | "title"
-      >
-    >({
-      queryFn: async ({ deadline, description, label, status, title }) => {
+    createOneTask: builder.mutation<string, NewTaskType>({
+      queryFn: async ({
+        deadline,
+        description,
+        label,
+        status,
+        title,
+        userOwner,
+      }) => {
         await addDoc(collection(db, tasksCollectionName), {
           deadline,
           description,
           label,
           status,
           title,
+          userOwner,
         });
         try {
           return {
             data: "Task Added Successfully",
+          };
+        } catch (err) {
+          return {
+            error: (err as Error)?.message,
+          };
+        }
+      },
+      invalidatesTags: ["Tasks"],
+    }),
+    editOneTask: builder.mutation<string, UpdateTaskType>({
+      queryFn: async ({ deadline, description, label, status, title, id }) => {
+        try {
+          const docRef = doc(db, tasksCollectionName, id);
+          await updateDoc(docRef, {
+            deadline,
+            description,
+            label,
+            status,
+            title,
+          });
+
+          return {
+            data: "Task Updated Successfully",
           };
         } catch (err) {
           return {
@@ -97,4 +137,5 @@ export const {
   useGetAllTasksQuery,
   useDeleteOneTaskMutation,
   useCreateOneTaskMutation,
+  useEditOneTaskMutation,
 } = taskAPI;

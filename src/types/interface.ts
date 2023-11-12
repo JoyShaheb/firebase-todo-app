@@ -10,6 +10,13 @@ export interface IUpdateUser {
   uid: string;
 }
 
+export interface UserState {
+  uid: string;
+  name: string;
+  email: string;
+  photoURL: string;
+}
+
 export interface ITaskProps {
   id: string;
   title: string;
@@ -17,4 +24,5 @@ export interface ITaskProps {
   status: string;
   deadline: string;
   label: string;
+  userOwner: string;
 }
