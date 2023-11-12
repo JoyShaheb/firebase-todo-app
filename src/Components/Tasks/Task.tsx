@@ -43,7 +43,6 @@ const Task: FC<ITaskComponentProps> = ({
             {status}
           </span>
         )}
-        {/* <CreateModal/> */}
         <span className="bg-green-500 text-white px-4 py-1 rounded-full">
           <BsPencil />
         </span>

@@ -74,7 +74,7 @@ const Tasks = () => {
               <input
                 type="text"
                 id="title"
-                className="form-input"
+                className="form-input text-black"
                 onChange={handleInput}
                 name="title"
                 value={newTask?.title}
@@ -88,7 +88,7 @@ const Tasks = () => {
               <input
                 type="date"
                 id="deadline"
-                className="form-input"
+                className="form-input text-black"
                 onChange={handleInput}
                 name="deadline"
                 value={newTask?.deadline}
@@ -102,7 +102,7 @@ const Tasks = () => {
               <input
                 type="text"
                 id="description"
-                className="form-input"
+                className="form-input text-black"
                 onChange={handleInput}
                 name="description"
                 value={newTask?.description}
@@ -116,7 +116,7 @@ const Tasks = () => {
               <input
                 type="text"
                 id="status"
-                className="form-input"
+                className="form-input text-black"
                 onChange={handleInput}
                 name="status"
                 value={newTask?.status}
@@ -130,7 +130,7 @@ const Tasks = () => {
               <input
                 type="text"
                 id="label"
-                className="form-input"
+                className="form-input text-black"
                 onChange={handleInput}
                 name="label"
                 value={newTask?.label}
@@ -139,6 +139,7 @@ const Tasks = () => {
           </form>
         </div>
       </CreateModal>
+
 
 
       {data?.map((task) => {
