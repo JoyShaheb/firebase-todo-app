@@ -26,3 +26,5 @@ export const sysmtemSlice = createSlice({
 });
 
 export const { themeSwitch, resetSystem } = sysmtemSlice.actions;
+
+export { ThemeTypesEnum };
