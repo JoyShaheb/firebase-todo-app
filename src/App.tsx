@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Home,
@@ -10,23 +9,25 @@ import {
   Tasks,
   Profile,
 } from "./pages";
-import Navbar from "./Components/Navbar";
+import Navbar from "./components/Navbar";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Config/firebase-config";
 // import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { loginSuccess, logoutSuccess } from "./store";
 import { AuthenticationRoutes, ProtectedRoutes } from "./pages/utils";
-
+import { useEffect } from "react";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
+      console.log(user);
       if (user) {
         const uid = user.uid;
         const photoURL = user.photoURL as string;
         const name = user.displayName as string;
         const email = user.email as string;
+        const phoneNumber = user.phoneNumber as string;
         // @ts-ignore
         // Cookies.set("accessToken", user?.accessToken);
         dispatch(
@@ -35,6 +36,7 @@ const App = () => {
             photoURL,
             name,
             email,
+            phoneNumber,
           })
         );
       } else {
@@ -43,30 +45,25 @@ const App = () => {
       }
     });
   }, []);
-
   return (
     <BrowserRouter>
       <Navbar>
         <Routes>
           <Route path="/" element={<Home />} />
-
           <Route element={<ProtectedRoutes />}>
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
-
           <Route element={<AuthenticationRoutes />}>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
-
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Navbar>
     </BrowserRouter>
   );
 };
-
 export default App;
