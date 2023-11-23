@@ -1,6 +1,7 @@
-# Objective
+# react-firebase-todo-app
+# Project Description
 
-Creating a tutorial for everyone on how to use react with firebase by building a todo app
+This project is aimed at enhancing my skills and knowledge by building a comprehensive application using React and Firebase. 
 
 ## Topics covered in the tutorial
 
