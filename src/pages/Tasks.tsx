@@ -3,14 +3,23 @@ import {
   useDeleteOneTaskMutation,
   useCreateOneTaskMutation,
 } from "../store/API/taskAPI";
-import Task from "../components/Tasks/Task";
 import { toast } from "react-toastify";
 import TaskModal from "../components/Modal/TaskModal";
 import React from "react";
-import TaskForm from "../components/Form/TaskForm";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { NewTaskType } from "../types/types";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import ConfirmModal from "@/components/Modal/ConfirmModal";
+
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
   const initialState: NewTaskType = {
@@ -59,7 +68,7 @@ const Tasks = () => {
   }
   return (
     <div className="row">
-      <TaskModal
+      {/* <TaskModal
         button={
           <div className="flex justify-center">
             <button className="btn btn-primary bg-blue-700 p-2 rounded-full mt-5 mx-auto">
@@ -73,11 +82,43 @@ const Tasks = () => {
         onConfirm={onSubmit}
       >
         <TaskForm {...newTask} handleInput={handleInput} />
-      </TaskModal>
+      </TaskModal> */}
 
-      {data?.map((task) => {
+      <TaskModal button={<button>Create Task</button>} onConfirm={onSubmit} title="Create Task"/>
+
+      {/* {data?.map((task) => {
         return <Task key={task.id} {...task} deleteTask={deleteTask} />;
-      })}
+      })} */}
+      <Table>
+        <TableCaption>A list of your toDo.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">title</TableHead>
+            <TableHead>deadline</TableHead>
+            <TableHead>label</TableHead>
+            <TableHead>description</TableHead>
+            <TableHead>status</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data?.map((task) => (
+            <TableRow style={{backgroundColor: "black"}} key={task?.id}>
+              <TableCell className="font-medium">{task?.title}</TableCell>
+              <TableCell>{task?.deadline}</TableCell>
+              <TableCell>{task?.label}</TableCell>
+              <TableCell>{task?.description}</TableCell>
+              <TableCell>{task?.status}</TableCell>
+              <TableCell className="text-right">
+                <ConfirmModal deleteFn={()=> deleteTask(task?.id)}/>
+                {/* <button onClick={()=>deleteTask(task?.id)}>Delete</button> */}
+              </TableCell>
+              <TableCell className="text-right"><button onClick={()=>deleteTask(task?.id)}>Edit</button></TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
     </div>
   );
 };
