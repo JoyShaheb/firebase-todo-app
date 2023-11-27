@@ -2,13 +2,14 @@ import {
   useGetAllTasksQuery,
   useDeleteOneTaskMutation,
   useCreateOneTaskMutation,
+  useEditOneTaskMutation,
 } from "../store/API/taskAPI";
-import { toast } from "react-toastify";
 import TaskModal from "../components/Modal/TaskModal";
+import { toast } from "react-toastify";
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { NewTaskType } from "../types/types";
+import { NewTaskType, UpdateTaskType } from "../types/types";
 import {
   Table,
   TableBody,
@@ -17,8 +18,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import ConfirmModal from "@/components/Modal/ConfirmModal";
+} from "@/components/ui/table";
+
+import { Button } from "@/components/ui/button";
+import TaskMenu from "@/components/Menu/TaskMenu";
 
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
@@ -42,6 +45,7 @@ const Tasks = () => {
   });
   const [deleteOneTask] = useDeleteOneTaskMutation();
   const [createOneTask] = useCreateOneTaskMutation();
+  const [editOneTask] = useEditOneTaskMutation();
   const deleteTask = async (id: string) => {
     toast.promise(deleteOneTask({ id }).unwrap(), {
       pending: "Deleting task...",
@@ -50,7 +54,7 @@ const Tasks = () => {
     });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     toast
       .promise(createOneTask(newTask).unwrap(), {
         pending: "Creating task...",
@@ -60,65 +64,65 @@ const Tasks = () => {
       .then(() => setNewTask(initialState));
   };
 
+  const onEdit = async (data: UpdateTaskType) => {
+    toast.promise(editOneTask(data).unwrap(), {
+      pending: "Editing task...",
+      success: "Task edited successfully",
+      error: "Error editing task",
+    });
+  };
+
   if (isLoading || isFetching) {
-    return <div className="">Loading please wait....</div>;
+    return <div className="text-black">Loading please wait....</div>;
   }
   if (isError) {
     return <div className="">Error, please try again</div>;
   }
   return (
-    <div className="row">
-      {/* <TaskModal
-        button={
-          <div className="flex justify-center">
-            <button className="btn btn-primary bg-blue-700 p-2 rounded-full mt-5 mx-auto">
-              Create Task
-            </button>
-          </div>
-        }
-        title="Create Task"
-        onCancel={() => console.log("cancel")}
-        onClose={() => console.log("close")}
-        onConfirm={onSubmit}
-      >
-        <TaskForm {...newTask} handleInput={handleInput} />
-      </TaskModal> */}
-
-      <TaskModal button={<button>Create Task</button>} onConfirm={onSubmit} title="Create Task"/>
-
-      {/* {data?.map((task) => {
-        return <Task key={task.id} {...task} deleteTask={deleteTask} />;
-      })} */}
-      <Table>
-        <TableCaption>A list of your toDo.</TableCaption>
+    <div className="my-6">
+      <TaskModal
+        createTaskFn={onSubmit}
+        newTask={newTask}
+        handleInput={handleInput}
+      />
+      <Table className="border mt-4">
+        <TableCaption>A list of your Todos.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">title</TableHead>
-            <TableHead>deadline</TableHead>
-            <TableHead>label</TableHead>
-            <TableHead>description</TableHead>
-            <TableHead>status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="w-[100px]">Title</TableHead>
+            <TableHead className="w-[120px]">Deadline</TableHead>
+            <TableHead className="w-[100px]">Status</TableHead>
+            <TableHead className="text-left">description</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.map((task) => (
-            <TableRow style={{backgroundColor: "black"}} key={task?.id}>
-              <TableCell className="font-medium">{task?.title}</TableCell>
-              <TableCell>{task?.deadline}</TableCell>
-              <TableCell>{task?.label}</TableCell>
-              <TableCell>{task?.description}</TableCell>
-              <TableCell>{task?.status}</TableCell>
-              <TableCell className="text-right">
-                <ConfirmModal deleteFn={()=> deleteTask(task?.id)}/>
-                {/* <button onClick={()=>deleteTask(task?.id)}>Delete</button> */}
-              </TableCell>
-              <TableCell className="text-right"><button onClick={()=>deleteTask(task?.id)}>Edit</button></TableCell>
-            </TableRow>
-          ))}
+          {data?.map((task) => {
+            return (
+              <TableRow key={task?.id}>
+                <TableCell className="font-medium">{task?.title}</TableCell>
+                <TableCell>
+                  {/* {task?.deadline} */}
+                  deadline here
+                </TableCell>
+                <TableCell>{task?.status}</TableCell>
+                <TableCell className="flex  items-center gap-3">
+                  <Button variant="outline" size="sm">
+                    {task?.label ? task?.label : "No label"}
+                  </Button>
+                  {task?.description}
+                </TableCell>
+                <TableCell>
+                  <TaskMenu
+                    onDelete={() => deleteTask(task?.id)}
+                    taskData={task}
+                    onEdit={onEdit}
+                  />
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
-
     </div>
   );
 };

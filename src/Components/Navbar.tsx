@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
@@ -7,11 +7,24 @@ import { toast } from "react-toastify";
 import { TextLimit } from "./Text/TextLimit";
 import { Link } from "react-router-dom";
 import { UserIcon } from "@heroicons/react/24/outline";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+import BasicSwitch from "./Switch/BasicSwitch";
+import { themeSwitch, ThemeTypesEnum } from "../store/Slices/systemSlice";
 
 const Navbar = ({ children }: { children: React.ReactNode }) => {
   const [logout] = useLogoutMutation();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.user);
+  const mode: string = useSelector((x: RootState) => x.system.mode);
+
+  const iconStyles =
+    "w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white";
+
+  const isDarkMode = mode === ThemeTypesEnum.DARK;
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(ThemeTypesEnum.DARK, isDarkMode);
+  }, [isDarkMode]);
 
   const navigate = useNavigate();
 
@@ -24,6 +37,10 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
       })
       .then(() => setIsMenuOpen(false))
       .then(() => navigate("/login"));
+  function dispatch(arg0: any): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -107,6 +124,23 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                   >
                     Sign out
+                  </div>
+                  <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white :bg-gray-700 group">
+                    {isDarkMode ? (
+                      <MoonIcon className={iconStyles} />
+                    ) : (
+                      <SunIcon className={iconStyles} /> // Use SunIcon for light mode
+                    )}
+                    <span className="flex-1 ml-3 whitespace-nowrap">
+                      {isDarkMode ? "Dark Mode" : "Light Mode"}
+                    </span>
+                    <BasicSwitch
+                      onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        e.target.checked
+                          ? dispatch(themeSwitch(ThemeTypesEnum.DARK))
+                          : dispatch(themeSwitch(ThemeTypesEnum.LIGHT))
+                      }
+                    />
                   </div>
                 </ul>
               </div>

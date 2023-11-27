@@ -1,72 +1,63 @@
-import React from "react";
-import InputField from "./InputField";
+import { FC } from "react";
+import InputFieldWithLabel from "./InputFieldWithLabel";
+import { NewTaskTypeForm } from "@/types/types";
 
-const TaskForm = ({
-  title,
+const TaskForm: FC<NewTaskTypeForm> = ({
   deadline,
-  status,
-  label,
   description,
+  label,
+  status,
+  title,
   handleInput,
-}: {
-  title: string;
-  deadline: string;
-  status: string;
-  label: string;
-  description: string;
-  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
-    <form
-      className="w-80"
-      onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => e.preventDefault()}
-    >
-      <InputField
-        label="Task Name"
+    <>
+      <InputFieldWithLabel
         onChange={handleInput}
-        name="text"
-        placeholder="Enter Task Name"
-        required
         type="text"
         value={title}
-      />
-      <InputField
-        label="Task deadline"
-        onChange={handleInput}
-        name="deadline"
-        placeholder="Enter Task deadline"
+        placeholder="Add task title"
+        label="Title"
+        name="title"
         required
-        type="date"
-        value={deadline}
       />
-      <InputField
-        label="Status"
+      <InputFieldWithLabel
         onChange={handleInput}
-        name="status"
-        placeholder="Enter Task status"
-        required
         type="text"
-        value={status}
+        value={deadline}
+        placeholder="Add project deadline"
+        label="Deadline"
+        name="deadline"
+        required={false}
       />
-      <InputField
-        label="Label"
+      <InputFieldWithLabel
         onChange={handleInput}
-        name="label"
-        placeholder="Label"
-        required
         type="text"
         value={label}
-      />
-      <InputField
-        label="Task description"
-        onChange={handleInput}
-        name="description"
-        placeholder="Task description"
+        placeholder="Add tak label"
+        label="Label"
+        name="label"
         required
+      />
+      <InputFieldWithLabel
+        onChange={handleInput}
+        type="text"
+        value={status}
+        placeholder="Add status to project"
+        label="Status"
+        name="status"
+        required
+      />
+      <InputFieldWithLabel
+        onChange={handleInput}
         type="text"
         value={description}
+        placeholder="Add Task description"
+        label="Description"
+        name="description"
+        required
       />
-    </form>
+    </>
   );
 };
 

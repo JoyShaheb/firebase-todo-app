@@ -1,6 +1,5 @@
 import InputField from "../Form/InputField";
 
-
 const EditProfileForm = ({
   name,
   photoURL,

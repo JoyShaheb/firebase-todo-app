@@ -16,6 +16,13 @@ export type NewTaskType = Pick<
   "deadline" | "description" | "label" | "status" | "title" | "userOwner"
 >;
 
+export type NewTaskTypeForm = Pick<
+  ITaskProps,
+  "deadline" | "description" | "label" | "status" | "title"
+> & {
+  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
 export type UpdateTaskType = Pick<
   ITaskProps,
   "deadline" | "description" | "label" | "status" | "title" | "id"

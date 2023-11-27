@@ -1,49 +1,56 @@
-import React, { FC } from 'react'
+import { Button } from "@/components/ui/button";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import TaskForm from "../Form/TaskForm";
+import { FC } from "react";
+import { NewTaskType } from "@/types/types";
 
-export interface ITaskModalProps {
-  button: JSX.Element;
-  title: string;
-  onConfirm: () => void;
+interface TaskModalProps {
+  newTask: NewTaskType;
+  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  createTaskFn: () => Promise<void>;
 }
 
-const TaskModal: FC<ITaskModalProps> = ({
-  button,
-  title,
-  onConfirm,
+const TaskModal: FC<TaskModalProps> = ({
+  handleInput,
+  newTask,
+  createTaskFn,
 }) => {
   return (
-    <AlertDialog>
-    <AlertDialogTrigger asChild>
-        <Button variant="outline">{button}</Button>
-    </AlertDialogTrigger>
-    <AlertDialogContent>
-        <AlertDialogHeader>
-            <AlertDialogTitle>{title}</AlertDialogTitle>
-            <AlertDialogDescription>
-                <form>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="default">Add Task</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createTaskFn();
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>Create New Task</DialogTitle>
+            <DialogDescription>
+              Create A new task here. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <TaskForm {...newTask} handleInput={handleInput} />
+          </div>
+          <DialogFooter>
+            <Button type="submit">Save changes</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
-                </form>
-            </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction type='submit' onClick={onConfirm}>Continue</AlertDialogAction>
-        </AlertDialogFooter>
-    </AlertDialogContent>
-</AlertDialog>
-  )
-}
-
-export default TaskModal
+export default TaskModal;

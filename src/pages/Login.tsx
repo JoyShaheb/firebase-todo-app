@@ -9,7 +9,7 @@ import { IUserSignInData } from "../types/interface";
 const Login = () => {
   const initialState: IUserSignInData = {
     email: "khondokoralam@gmail.com",
-    password: "1234567"
+    password: "1234567",
   };
 
   const navigate = useNavigate();
