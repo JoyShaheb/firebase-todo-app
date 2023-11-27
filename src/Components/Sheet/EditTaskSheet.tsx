@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -22,7 +20,7 @@ const EditTaskSheet = ({
 }: {
   icon: React.ReactNode;
   taskData: ITaskProps;
-  onEdit: (data: ITaskProps) => Promise<void>;
+  onEdit: (data: ITaskProps) => Promise<string>;
 }) => {
   const [localdata, setLocalData] = useState(taskData);
 

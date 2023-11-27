@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { NewTaskType, UpdateTaskType } from "../types/types";
+import { NewTaskType } from "../types/types";
 import {
   Table,
   TableBody,
@@ -22,6 +22,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import TaskMenu from "@/components/Menu/TaskMenu";
+import { ITaskProps } from "@/types/interface";
 
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
@@ -46,15 +47,14 @@ const Tasks = () => {
   const [deleteOneTask] = useDeleteOneTaskMutation();
   const [createOneTask] = useCreateOneTaskMutation();
   const [editOneTask] = useEditOneTaskMutation();
-  const deleteTask = async (id: string) => {
+  const deleteTask = async (id: string) =>
     toast.promise(deleteOneTask({ id }).unwrap(), {
       pending: "Deleting task...",
       success: "Task deleted successfully",
       error: "Error deleting task",
     });
-  };
 
-  const onSubmit = async () => {
+  const onSubmit = async () =>
     toast
       .promise(createOneTask(newTask).unwrap(), {
         pending: "Creating task...",
@@ -62,18 +62,16 @@ const Tasks = () => {
         error: "Error creating task",
       })
       .then(() => setNewTask(initialState));
-  };
 
-  const onEdit = async (data: UpdateTaskType) => {
+  const onEdit = async (data: ITaskProps) =>
     toast.promise(editOneTask(data).unwrap(), {
       pending: "Editing task...",
       success: "Task edited successfully",
       error: "Error editing task",
     });
-  };
 
   if (isLoading || isFetching) {
-    return <div className="text-black">Loading please wait....</div>;
+    return <div className="">Loading please wait....</div>;
   }
   if (isError) {
     return <div className="">Error, please try again</div>;
