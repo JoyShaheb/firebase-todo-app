@@ -148,6 +148,7 @@ const Profile = () => {
             {/* <button onClick={appSignout}>click to logout</button> */}
             <br />
             <form onSubmit={uploadImages}>
+               {/* @ts-ignore */}
               {file?.name}
               <input
                 type="file"
@@ -264,10 +265,6 @@ const Profile = () => {
             src="https://source.unsplash.com/MP0IUfwrn0A"
             className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
           />
-        </div>
-
-        <div className="absolute top-0 right-0 h-12 w-18 p-4">
-          <button className="js-change-theme focus:outline-none">🌙</button>
         </div>
       </div>
     </div>
