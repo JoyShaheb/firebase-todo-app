@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { useLogoutMutation } from "../store";
 import { toast } from "react-toastify";
 import { themeSwitch, ThemeTypesEnum } from "../store/Slices/systemSlice";
 import NavbarMenuOptions from "./Layout/NavbarMenuOptions";
+import { LuSunMoon } from "react-icons/lu";
+import { Button } from "./ui/button";
 
 const Navbar = ({ children }: { children: React.ReactNode }) => {
   const [logout] = useLogoutMutation();
   const user = useSelector((state: RootState) => state.user);
   const mode: string = useSelector((x: RootState) => x.system.mode);
 
-   const isDarkMode = mode === ThemeTypesEnum.DARK;
+  const dispatch = useDispatch()
+
+  const isDarkMode = mode === ThemeTypesEnum.DARK;
 
   useEffect(() => {
     document.documentElement.classList.toggle(ThemeTypesEnum.DARK, isDarkMode);
@@ -39,10 +43,18 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
           >
             Fire Task
           </span>
-          {/* icon */}
+          <Button variant="ghost" size="icon" onClick={() =>
+            dispatch(
+              themeSwitch(
+                isDarkMode ? ThemeTypesEnum.LIGHT : ThemeTypesEnum.DARK
+              )
+            )
+          } >
+            <LuSunMoon className="w-7 h-7" />
+          </Button>
           {user.uid && (
             <div className="">
-              <NavbarMenuOptions appSignout={appSignout} userImage={user?.photoURL}/>
+              <NavbarMenuOptions appSignout={appSignout} userImage={user?.photoURL} />
             </div>
           )}
 
