@@ -1,6 +1,8 @@
 import { FC } from "react";
 import InputFieldWithLabel from "./InputFieldWithLabel";
 import { NewTaskTypeForm } from "@/types/types";
+import { Label } from "@radix-ui/react-label";
+import DateCalendar from "../Calendar/DateCalendar";
 
 const TaskForm: FC<NewTaskTypeForm> = ({
   deadline,
@@ -9,6 +11,7 @@ const TaskForm: FC<NewTaskTypeForm> = ({
   status,
   title,
   handleInput,
+  handleDateChange,
 }) => {
   return (
     <>
@@ -21,15 +24,10 @@ const TaskForm: FC<NewTaskTypeForm> = ({
         name="title"
         required
       />
-      <InputFieldWithLabel
-        onChange={handleInput}
-        type="text"
-        value={deadline}
-        placeholder="Add project deadline"
-        label="Deadline"
-        name="deadline"
-        required={false}
-      />
+      <div className="flex flex-col gap-2">
+        <Label>Deadline</Label>
+        <DateCalendar date={deadline} setDate={handleDateChange} />
+      </div>
       <InputFieldWithLabel
         onChange={handleInput}
         type="text"

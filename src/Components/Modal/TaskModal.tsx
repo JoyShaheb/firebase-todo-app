@@ -16,12 +16,14 @@ interface TaskModalProps {
   newTask: NewTaskType;
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   createTaskFn: () => Promise<void>;
+  handleDateChange: (date: Date) => void; 
 }
 
 const TaskModal: FC<TaskModalProps> = ({
   handleInput,
   newTask,
   createTaskFn,
+  handleDateChange,
 }) => {
   return (
     <Dialog>
@@ -42,7 +44,7 @@ const TaskModal: FC<TaskModalProps> = ({
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <TaskForm {...newTask} handleInput={handleInput} />
+            <TaskForm {...newTask} handleInput={handleInput} handleDateChange={handleDateChange} />
           </div>
           <DialogFooter>
             <Button type="submit">Save changes</Button>

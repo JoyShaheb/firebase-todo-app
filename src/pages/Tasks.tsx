@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
 import TaskMenu from "@/components/Menu/TaskMenu";
 import { ITaskProps } from "@/types/interface";
@@ -27,7 +27,7 @@ import { ITaskProps } from "@/types/interface";
 const Tasks = () => {
   const userID = useSelector((state: RootState) => state.user.uid);
   const initialState: NewTaskType = {
-    deadline: "",
+    deadline: new Date(),
     description: "",
     label: "",
     status: "",
@@ -41,6 +41,13 @@ const Tasks = () => {
       ...newTask,
       [e.target.name]: e.target.value,
     });
+
+  const handleDateChange = (date: Date) => {
+    setNewTask({
+      ...newTask,
+      deadline: date,
+    })
+  }
   const { data, isError, isFetching, isLoading } = useGetAllTasksQuery({
     userID,
   });
@@ -82,6 +89,7 @@ const Tasks = () => {
         createTaskFn={onSubmit}
         newTask={newTask}
         handleInput={handleInput}
+        handleDateChange={handleDateChange}
       />
       <Table className="border mt-4">
         <TableCaption>A list of your Todos.</TableCaption>
@@ -99,8 +107,12 @@ const Tasks = () => {
               <TableRow key={task?.id}>
                 <TableCell className="font-medium">{task?.title}</TableCell>
                 <TableCell>
-                  {/* {task?.deadline} */}
-                  deadline here
+                  {task?.deadline
+                    ? // @ts-ignore
+                    dayjs(task?.deadline?.seconds * 1000).format(
+                      "dddd, MMMM D, YYYY",
+                    )
+                    : "No Deadline"}
                 </TableCell>
                 <TableCell>{task?.status}</TableCell>
                 <TableCell className="flex  items-center gap-3">
