@@ -1,24 +1,20 @@
 import { toast } from "react-toastify";
 import {
   RootState,
-  loginSuccess,
-  useLogoutMutation,
   useUpdateUserProfileMutation,
 } from "../store";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IUpdateUser } from "../types/interface";
 import { useState } from "react";
-import EditProfileForm from "../components/Form/EditProfileForm";
-import EditProfileModal from "../components/Modal/EditProfileModal";
 import { useUploadImageMutation } from "../store/API/storageAPI";
+import EditProfileSheet from "@/components/Sheet/EditProfileSheet";
+import { User } from "lucide-react";
+// import { FaPhone } from 'react-icons/fa';
 
 const Profile = () => {
   const [uploadImage] = useUploadImageMutation();
 
-  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
-  const [logout] = useLogoutMutation();
   const initialState: Pick<IUpdateUser, "name" | "photoURL" | "phoneNumber"> = {
     name: "Random Name",
     photoURL:
@@ -29,31 +25,20 @@ const Profile = () => {
   const dispatch = useDispatch();
   const [updateUserProfile] = useUpdateUserProfileMutation();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    formData: IUpdateUser
+  ) => {
     console.log("form clicked");
     e.preventDefault();
     await toast
-      .promise(updateUserProfile(data).unwrap(), {
+      .promise(updateUserProfile(formData).unwrap(), {
         pending: "Updating profile...",
         success: "Profile updated",
         error: "Profile update failed",
       })
-      .then((res: IUpdateUser) => dispatch(loginSuccess(res)))
       .catch((err) => toast.error(err));
   };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setData({ ...data, [e.target.name]: e.target.value });
-
-  const appSignout = async () =>
-    await toast
-      .promise(logout(null).unwrap, {
-        pending: "Logging out...",
-        success: "Logout successful",
-        error: "Logout failed",
-      })
-      // .then(() => setIsMenuOpen(false))
-      .then(() => navigate("/login"));
 
   const [file, setFile] = useState({});
 
@@ -116,6 +101,10 @@ const Profile = () => {
               </svg>
               Phone Number{user?.phoneNumber}
             </p>
+            {/* <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
+              <FaPhone className="h-4 fill-current text-green-700 pr-4" />
+              Phone Number{user?.phoneNumber}
+            </p> */}
             <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start mb-4">
               <svg
                 className="h-4 fill-current text-green-700 pr-4"
@@ -126,27 +115,17 @@ const Profile = () => {
               </svg>{" "}
               {user?.email}
             </p>
-            <EditProfileModal
-              button={
-                <div className="flex justify-center">
-                  <button className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full">
-                    Edit Profile
-                  </button>
+            <EditProfileSheet
+              icon={
+                <div className="flex items-center">
+                  <User className="mr-2 h-4 w-4" style={{ fill: "green" }} />
+                  <span>Edit Profile</span>
                 </div>
               }
-              title="Edit Profile"
-              onConfirm={handleSubmit}
-              onCancel={() => console.log("cancel")}
-              onClose={() => console.log("close")}
-            >
-              <EditProfileForm
-                {...data}
-                handleInputChange={handleInputChange}
-              />
-            </EditProfileModal>
-            <br />
-            {/* <button onClick={appSignout}>click to logout</button> */}
-            <br />
+              profileData={data}
+              onEdit={handleSubmit}
+            />
+                <br />
             <form onSubmit={uploadImages}>
                {/* @ts-ignore */}
               {file?.name}

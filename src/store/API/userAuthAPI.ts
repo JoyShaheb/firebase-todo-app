@@ -152,7 +152,7 @@ export const userAuthAPI = createApi({
               photoURL,
               email: user?.email,
               uid: user?.uid,
-              phoneNumber,
+              phoneNumber: user?.phoneNumber,
             } as IUpdateUser,
           };
         } catch (err) {

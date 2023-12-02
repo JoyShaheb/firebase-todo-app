@@ -15,7 +15,7 @@ const ConfirmModal = ({
   deleteFn,
 }: {
   icon: React.ReactNode;
-  deleteFn: (id: string) => Promise<string>;
+  deleteFn: (id: string) => Promise<void>;
 }) => {
   return (
     <AlertDialog>

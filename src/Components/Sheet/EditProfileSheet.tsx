@@ -9,39 +9,28 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import TaskForm from "../Form/TaskForm";
-import { ITaskProps } from "@/types/interface";
+import ProfileForm from "../Form/ProfileForm";
+import { IUpdateUser } from "@/types/interface";
 import { useState } from "react";
 
-const EditTaskSheet = ({
+const EditProfileSheet = ({
   icon,
-  taskData,
+  profileData,
   onEdit,
 }: {
   icon: React.ReactNode;
-  taskData: ITaskProps;
-  onEdit: (data: ITaskProps) => Promise<void>;
+  profileData: IUpdateUser;
+  onEdit: (
+    e: React.FormEvent<HTMLFormElement>,
+    data: IUpdateUser
+  ) => Promise<void>;
 }) => {
-  const [localdata, setLocalData] = useState(taskData);
+  const [localdata, setLocalData] = useState(profileData);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalData({
       ...localdata,
       [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleDateChange = (date: Date) => {
-    setLocalData({
-      ...localdata,
-      deadline: date, 
-    });
-  };
-
-  const handleStatusChange = (status: string) => {
-    setLocalData({
-      ...localdata,
-      status: status,
     });
   };
 
@@ -51,23 +40,21 @@ const EditTaskSheet = ({
       <SheetContent>
         <form
           onSubmit={(e) => {
-            e.preventDefault();
+            onEdit(e, localdata);
           }}
         >
           <SheetHeader>
-            <SheetTitle>Edit task</SheetTitle>
+            <SheetTitle>Edit Profile</SheetTitle>
             <SheetDescription>
-              Make changes to your Task here. Click save when you're done.
+              Make changes to your profile here. Click save when you're done.
             </SheetDescription>
           </SheetHeader>
           <div className="grid gap-4 py-4">
-            <TaskForm {...localdata} handleInput={handleInput} handleDateChange={handleDateChange} handleStatusChange={handleStatusChange} />
+            <ProfileForm {...localdata} handleInput={handleInput} />
           </div>
           <SheetFooter>
             <SheetClose asChild>
-              <Button onClick={() => onEdit(localdata)} type="submit">
-                Save changes
-              </Button>
+              <Button type="submit">Save changes</Button>
             </SheetClose>
           </SheetFooter>
         </form>
@@ -76,4 +63,4 @@ const EditTaskSheet = ({
   );
 };
 
-export default EditTaskSheet;
+export default EditProfileSheet;

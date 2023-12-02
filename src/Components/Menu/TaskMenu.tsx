@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LuMoreHorizontal } from "react-icons/lu";
@@ -17,9 +18,9 @@ import EditTaskSheet from "../Sheet/EditTaskSheet";
 import { ITaskProps } from "@/types/interface";
 
 interface ITaskMenuProps {
-  onDelete: (id: string) => Promise<string>;
+  onDelete: (id: string) => Promise<void>;
   taskData: ITaskProps;
-  onEdit: (data: ITaskProps) => Promise<string>;
+  onEdit: (data: ITaskProps) => Promise<void>;
 }
 
 const TaskMenu: FC<ITaskMenuProps> = ({ onDelete, taskData, onEdit }) => {
@@ -31,7 +32,7 @@ const TaskMenu: FC<ITaskMenuProps> = ({ onDelete, taskData, onEdit }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>

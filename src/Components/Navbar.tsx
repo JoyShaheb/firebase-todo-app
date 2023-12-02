@@ -4,17 +4,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { useLogoutMutation } from "../store";
 import { toast } from "react-toastify";
+import { LuSunMoon } from "react-icons/lu";
 import { themeSwitch, ThemeTypesEnum } from "../store/Slices/systemSlice";
 import NavbarMenuOptions from "./Layout/NavbarMenuOptions";
-import { LuSunMoon } from "react-icons/lu";
 import { Button } from "./ui/button";
 
 const Navbar = ({ children }: { children: React.ReactNode }) => {
+  const dispatch = useDispatch();
   const [logout] = useLogoutMutation();
   const user = useSelector((state: RootState) => state.user);
   const mode: string = useSelector((x: RootState) => x.system.mode);
-
-  const dispatch = useDispatch()
 
   const isDarkMode = mode === ThemeTypesEnum.DARK;
 
@@ -43,21 +42,26 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
           >
             Fire Task
           </span>
-          <Button variant="ghost" size="icon" onClick={() =>
-            dispatch(
-              themeSwitch(
-                isDarkMode ? ThemeTypesEnum.LIGHT : ThemeTypesEnum.DARK
+          <Button
+            onClick={() =>
+              dispatch(
+                themeSwitch(
+                  isDarkMode ? ThemeTypesEnum.LIGHT : ThemeTypesEnum.DARK
+                )
               )
-            )
-          } >
+            }
+            variant="ghost"
+            size="icon"
+          >
             <LuSunMoon className="w-7 h-7" />
           </Button>
+          {/* icon */}
           {user.uid && (
-            <div className="">
-              <NavbarMenuOptions appSignout={appSignout} userImage={user?.photoURL} />
-            </div>
+            <NavbarMenuOptions
+              appSignout={appSignout}
+              userImage={user?.photoURL}
+            />
           )}
-
           {/* signup button */}
           {!user.uid && (
             <div className="flex gap-3">
