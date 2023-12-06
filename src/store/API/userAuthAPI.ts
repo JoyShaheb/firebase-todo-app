@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { auth, googleProvider } from "../../Config/firebase-config";
+import { auth, db, googleProvider } from "../../Config/firebase-config";
 import {
   createUserWithEmailAndPassword,
   UserCredential,
@@ -11,6 +11,10 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { IUserSignInData, IUpdateUser } from "../../types/interface";
+import { doc, setDoc } from "firebase/firestore";
+
+const usersCollectionName = "users";
+
 export const userAuthAPI = createApi({
   reducerPath: "userAuthAPI",
   baseQuery: fakeBaseQuery(),
@@ -40,6 +44,25 @@ export const userAuthAPI = createApi({
             email,
             password
           );
+
+          const userID = response.user?.uid;
+          const userDocRef = doc(db, usersCollectionName, userID);
+
+          await setDoc(userDocRef, {
+            uid: userID,
+            firstName: "",
+            lastName: "",
+            displayName: response.user?.displayName,
+            email: response.user?.email,
+            phoneNumber: response.user?.phoneNumber,
+            address: "",
+            photoURL: response.user?.photoURL,
+            facebook: "",
+            twitter: "",
+            instagram: "",
+            linkedin: "",
+          });
+
           return {
             data: response, // Corrected the return type to match QueryReturnValue
           };

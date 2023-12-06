@@ -1,14 +1,24 @@
 import React, { useState } from "react";
-import InputField from "../Components/Form/InputField";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useEmailSignupMutation, useGoogleSignupMutation } from "../store";
 import { useNavigate } from "react-router-dom";
 import { IUserSignInData } from "../types/interface";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 
 const Signup = () => {
   const initialState: IUserSignInData = {
-    name: "",
     email: "",
     password: "",
   };
@@ -48,63 +58,57 @@ const Signup = () => {
       .catch((err) => toast.error(err));
 
   return (
-    <section className="">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Sign Up for a new account
-            </h1>
-            <button onClick={GoogleAuth} className="border p-2">
-              Google signup
-            </button>
-            <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
-              <InputField
-                label="Your Name"
-                onChange={handleChange}
-                name="name"
-                placeholder="Someone"
-                required
-                type="text"
-                value={data.name}
-              />
-              <InputField
-                label="Your Email"
-                onChange={handleChange}
-                name="email"
-                placeholder="joy@gmail.com"
-                required
-                type="email"
-                value={data.email}
-              />
-              <InputField
-                label="Your Password"
-                name="password"
-                onChange={handleChange}
-                placeholder="********"
-                required
-                type="password"
-                value={data.password}
-              />
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Sign Up
-              </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Login
-                </Link>
-              </p>
-            </form>
+    <section className="h-[90vh] flex justify-center items-center">
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>Signup for a new profile</CardTitle>
+          <CardDescription>
+            Please provide email & password to Signup
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={onSubmit}>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  value={data?.email}
+                  onChange={handleChange}
+                  placeholder="johndoe@gmail.com"
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  placeholder="******"
+                  value={data?.password}
+                  onChange={handleChange}
+                />
+              </div>
+              <Button variant="secondary" className="w-full">
+                Signup
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col">
+          <div className="flex justify-center items-center gap-2 mb-3">
+            <Separator className="h-[2px] w-24" />
+            <p>or</p>
+            <Separator className="h-[2px] w-24" />
           </div>
-        </div>
-      </div>
+          <Button onClick={GoogleAuth} variant="default" className="w-full">
+            Google Signup
+          </Button>
+          <Link to="/login" className="text-xs my-2 text-primary">
+            Already have an account ? Login
+          </Link>
+        </CardFooter>
+      </Card>
     </section>
   );
 };

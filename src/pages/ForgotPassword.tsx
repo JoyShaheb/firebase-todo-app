@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import InputField from "../Components/Form/InputField";
 import { toast } from "react-toastify";
 import { useSendResetPassWordEmailMutation } from "../store";
 import { IUserSignInData } from "../types/interface";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const ForgotPassword = () => {
   const initialState: Pick<IUserSignInData, "email"> = {
@@ -34,33 +43,34 @@ const ForgotPassword = () => {
   };
 
   return (
-    <section className="">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Provide Email to Reset password
-            </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
-              <InputField
-                label="Your Email"
-                onChange={handleChange}
-                name="email"
-                placeholder="joy@gmail.com"
-                required
-                type="email"
-                value={data.email}
-              />
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Send Email
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+    <section className="h-[90vh] flex justify-center items-center">
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>Reset password</CardTitle>
+          <CardDescription>
+            Please provide Email to Reset password
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={onSubmit}>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5 my-5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  value={data?.email}
+                  onChange={handleChange}
+                  placeholder="johndoe@gmail.com"
+                />
+              </div>
+            </div>
+            <Button type="submit" variant="secondary" className="w-full">
+              Send Email
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </section>
   );
 };
